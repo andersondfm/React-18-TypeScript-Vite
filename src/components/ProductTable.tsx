@@ -87,7 +87,7 @@ const ProductTable: React.FC = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2 className="mb-4">Lista de Produtos</h2>
 
       <div className="mb-3">
