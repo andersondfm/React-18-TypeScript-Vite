@@ -126,22 +126,24 @@ const ProductTable: React.FC = () => {
         </tbody>
       </Table>
 
-      <div className="pagination">
-        <Button
-          variant="primary"
-          onClick={() => changePage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Anterior
-        </Button>
-        <span>Página {currentPage} de {totalPages}</span>
-        <Button
-          variant="primary"
-          onClick={() => changePage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Próxima
-        </Button>
+      <div className="pagination mt-3">
+  <Button
+    variant="primary"
+    onClick={() => changePage(currentPage - 1)}
+    disabled={currentPage === 1}
+    className="mr-2"  // Adicionando margem à direita
+  >
+    Anterior
+  </Button>
+  <span className="mx-2"> Página {currentPage} de {totalPages}</span>
+  <Button
+    variant="primary"
+    onClick={() => changePage(currentPage + 1)}
+    disabled={currentPage === totalPages}
+    className="ml-2"  // Adicionando margem à esquerda
+  >
+    Próxima
+  </Button>
       </div>
 
       <Modal show={showModal} onHide={handleCloseModal}>
