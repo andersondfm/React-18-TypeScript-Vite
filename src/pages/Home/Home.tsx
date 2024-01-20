@@ -1,8 +1,12 @@
+import { Header } from "../../components/header";
+import ProductTable from "../../components/ProductTable"; // Certifique-se de ajustar o caminho conforme necessário
+
 export const Home = () => {
   return (
     <div>
-      <h1>Home Page 23</h1>
-      {/* Conteúdo da página */}
+      <Header />
+      <h1>Andersondfm</h1>
+      <ProductTable />
     </div>
-  )
-}
+  );
+};

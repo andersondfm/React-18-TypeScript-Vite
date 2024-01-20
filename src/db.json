@@ -1,0 +1,45 @@
+{
+    "products": [
+      {
+        "idSkuOff": 1,
+        "idSkuOn": "SKU123",
+        "mercadoria": "Produto A",
+        "tipo": "Eletrônico",
+        "categoria": "Eletrônicos",
+        "status": "Disponível",
+        "ultAtualizacao": "2024-01-20",
+        "okComercial": "Sim"
+      },
+      {
+        "idSkuOff": 2,
+        "idSkuOn": "SKU456",
+        "mercadoria": "Produto B",
+        "tipo": "Roupa",
+        "categoria": "Vestuário",
+        "status": "Em falta",
+        "ultAtualizacao": "2024-01-19",
+        "okComercial": "Não"
+      },
+      {
+        "idSkuOff": 3,
+        "idSkuOn": "SKU789",
+        "mercadoria": "Produto C",
+        "tipo": "Livro",
+        "categoria": "Livros",
+        "status": "Disponível",
+        "ultAtualizacao": "2024-01-18",
+        "okComercial": "Sim"
+      },
+      {
+        "idSkuOff": 4,
+        "idSkuOn": "SKU730",
+        "mercadoria": "Produto D",
+        "tipo": "Livro",
+        "categoria": "Livros",
+        "status": "Disponível",
+        "ultAtualizacao": "2024-01-18",
+        "okComercial": "Sim"
+      }
+    ]
+  }
+  
