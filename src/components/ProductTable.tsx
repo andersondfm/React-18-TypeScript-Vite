@@ -46,17 +46,20 @@ const ProductTable: React.FC = () => {
   );
 
   const sortProducts = (a: Product, b: Product): number => {
-    const aValue = orderBy ? String(a[orderBy]).toLowerCase() : '';
-    const bValue = orderBy ? String(b[orderBy]).toLowerCase() : '';
-
-    if (aValue < bValue) {
-      return orderAsc ? -1 : 1;
-    } else if (aValue > bValue) {
-      return orderAsc ? 1 : -1;
-    } else {
-      return 0;
+    const aValue = orderBy ? String(a[orderBy]) : '';
+    const bValue = orderBy ? String(b[orderBy]) : '';
+  
+    // Comparação numérica
+    if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
+      return orderAsc
+        ? Number(aValue) - Number(bValue)
+        : Number(bValue) - Number(aValue);
     }
+  
+    // Comparação de strings
+    return orderAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
   };
+  
 
   const sortedProducts = filteredProducts.sort(sortProducts);
 
