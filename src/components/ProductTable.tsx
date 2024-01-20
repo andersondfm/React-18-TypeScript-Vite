@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Modal, Button } from 'react-bootstrap'; // Importando componentes do react-bootstrap
 import axios from 'axios';
 
