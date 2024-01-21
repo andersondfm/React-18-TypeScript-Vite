@@ -24,7 +24,6 @@ const ProductTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrderBy] = useState<string>('');
   const [orderAsc, setOrderAsc] = useState<boolean>(true);
-
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para armazenar o produto selecionado
   const [showModal, setShowModal] = useState<boolean>(false); // Estado para controlar a visibilidade da modal
 
@@ -87,22 +86,16 @@ const ProductTable: React.FC = () => {
     setShowModal(false);
   };
 
-  // ... (código anterior)
-
-const exportToExcel = (product: Product) => {
-  const worksheet = XLSX.utils.json_to_sheet([product]);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Produtos');
-  XLSX.writeFile(workbook, 'produtos.xlsx');
-};
-
-// ... (código posterior)
-
+  const exportToExcel = (product: Product) => {
+    const worksheet = XLSX.utils.json_to_sheet([product]);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Produtos');
+    XLSX.writeFile(workbook, 'produtos.xlsx');
+  };
 
   return (
     <div className="container">
       <h2 className="mb-4">Lista de Produtos</h2>
-
       <div className="mb-3">
         <input
           type="text"
@@ -111,7 +104,6 @@ const exportToExcel = (product: Product) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -149,27 +141,25 @@ const exportToExcel = (product: Product) => {
           ))}
         </tbody>
       </Table>
-
       <div className="pagination mt-3">
-  <Button
-    variant="primary"
-    onClick={() => changePage(currentPage - 1)}
-    disabled={currentPage === 1}
-    className="mr-2"  // Adicionando margem à direita
-  >
-    Anterior
-  </Button>
+      <Button
+        variant="primary"
+        onClick={() => changePage(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="mr-2"  // Adicionando margem à direita
+      >
+        Anterior
+      </Button>
   <span className="mx-2"> Página {currentPage} de {totalPages}</span>
-  <Button
-    variant="primary"
-    onClick={() => changePage(currentPage + 1)}
-    disabled={currentPage === totalPages}
-    className="ml-2"  // Adicionando margem à esquerda
-  >
-    Próxima
-  </Button>
+      <Button
+        variant="primary"
+        onClick={() => changePage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="ml-2"  // Adicionando margem à esquerda
+      >
+        Próxima
+      </Button>
       </div>
-
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Detalhes do Produto</Modal.Title>
