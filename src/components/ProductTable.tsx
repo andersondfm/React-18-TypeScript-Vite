@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal, Button } from 'react-bootstrap'; // Importando componentes do react-bootstrap
 import axios from 'axios';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx'
 
 
 interface Product {
@@ -17,6 +17,8 @@ interface Product {
 }
 
 const PAGE_SIZE = 5;
+const INACTIVITY_TIMEOUT = 10000; // 30 segundos em milissegundos
+
 
 const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,19 +28,61 @@ const ProductTable: React.FC = () => {
   const [orderAsc, setOrderAsc] = useState<boolean>(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para armazenar o produto selecionado
   const [showModal, setShowModal] = useState<boolean>(false); // Estado para controlar a visibilidade da modal
+  const [timeRemaining, setTimeRemaining] = useState(INACTIVITY_TIMEOUT);
+  const [firstLoad, setFirstLoad] = useState(true);
+
+
+  let inactivityTimer: NodeJS.Timeout;
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/products');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Erro ao obter dados da API:', error);
+    }
+  };
+
+  const resetInactivityTimer = () => {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      fetchData();
+      setTimeRemaining(INACTIVITY_TIMEOUT); // Reinicia o tempo restante
+    }, INACTIVITY_TIMEOUT);
+  };
+
+  const fetchDataAndUpdateTimer = async () => {
+    await fetchData();
+    resetInactivityTimer();
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/products');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Erro ao obter dados da API:', error);
-      }
+    const initialize = async () => {
+      await fetchData();
+      resetInactivityTimer();
+      setFirstLoad(false);
     };
 
-    fetchData();
-  }, []);
+    if (firstLoad) {
+      initialize();
+    } else {
+      // Atualiza o tempo restante a cada segundo
+      const timer = setInterval(() => {
+        setTimeRemaining((prevTime) => {
+          if (prevTime <= 0) {
+            fetchDataAndUpdateTimer(); // Requisição à API quando o temporizador atingir 0
+            return INACTIVITY_TIMEOUT;
+          }
+          return prevTime - 1000;
+        });
+      }, 1000);
+
+      // Limpa o intervalo quando o componente é desmontado
+      return () => clearInterval(timer);
+    }
+  }, [firstLoad, fetchDataAndUpdateTimer]);
+
+
 
   const filteredProducts = products.filter((product) =>
     Object.values(product).some((value) =>
@@ -103,6 +147,9 @@ const ProductTable: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+      </div>
+      <div>
+        Atualização automática em: {Math.ceil(timeRemaining / 1000)} segundos
       </div>
       <Table striped bordered hover>
         <thead>
