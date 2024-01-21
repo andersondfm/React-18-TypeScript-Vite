@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal, Button } from 'react-bootstrap'; // Importando componentes do react-bootstrap
 import axios from 'axios';
+import * as XLSX from 'xlsx';
+
 
 interface Product {
   idSkuOff: number;
@@ -59,7 +61,6 @@ const ProductTable: React.FC = () => {
     // Comparação de strings
     return orderAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
   };
-  
 
   const sortedProducts = filteredProducts.sort(sortProducts);
 
@@ -86,6 +87,18 @@ const ProductTable: React.FC = () => {
     setShowModal(false);
   };
 
+  // ... (código anterior)
+
+const exportToExcel = (product: Product) => {
+  const worksheet = XLSX.utils.json_to_sheet([product]);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Produtos');
+  XLSX.writeFile(workbook, 'produtos.xlsx');
+};
+
+// ... (código posterior)
+
+
   return (
     <div className="container">
       <h2 className="mb-4">Lista de Produtos</h2>
@@ -110,11 +123,12 @@ const ProductTable: React.FC = () => {
             <th onClick={() => handleSort('status')}>Status</th>
             <th onClick={() => handleSort('ultAtualizacao')}>Última Atualização</th>
             <th onClick={() => handleSort('okComercial')}>OK Comercial</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {currentProducts.map((product) => (
-            <tr key={product.idSkuOff} onClick={() => handleRowClick(product)}>
+              <tr key={product.idSkuOff}>
               <td>{product.idSkuOff}</td>
               <td>{product.idSkuOn}</td>
               <td>{product.mercadoria}</td>
@@ -123,6 +137,14 @@ const ProductTable: React.FC = () => {
               <td>{product.status}</td>
               <td>{product.ultAtualizacao}</td>
               <td>{product.okComercial}</td>
+              <td>
+        <Button variant="success" onClick={() => exportToExcel(product)}>
+          Exportar
+        </Button>
+        <Button variant="primary" onClick={() => handleRowClick(product)}>
+          Detalhes
+        </Button>
+      </td>
             </tr>
           ))}
         </tbody>
